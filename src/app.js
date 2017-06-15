@@ -1,1 +1,1 @@
-console.log('hiya');
+document.write(require('./content.js'));

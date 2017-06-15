@@ -4,7 +4,9 @@
   "description": "Prototype horizontal graph theory visualization",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack ./src/app.js public/js/bundle.js",
+    "serve": "http-server -p 3000"
   },
   "author": "",
   "license": "ISC",
