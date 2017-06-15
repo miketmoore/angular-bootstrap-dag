@@ -1,5 +1,5 @@
 'use strict';
-console.log('hi');
+
 var angular = require('angular');
 var cytoscape = require('cytoscape');
 
