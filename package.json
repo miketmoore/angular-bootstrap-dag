@@ -12,7 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "angular": "^1.4.9",
+    "css-loader": "^0.28.4",
     "cytoscape": "^3.1.1",
+    "cytoscape-dagre": "^1.6.0",
+    "style-loader": "^0.18.2",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   }
