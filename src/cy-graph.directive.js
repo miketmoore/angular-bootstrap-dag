@@ -6,7 +6,7 @@ cydagre(cytoscape);
 module.exports = function cyGraph() {
     return {
         restrict: 'E',
-        templateUrl: 'views/graph/graph.html',
+        templateUrl: 'views/cy-graph.html',
         scope: {
             data: '='
         },

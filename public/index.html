@@ -5,10 +5,16 @@
     <body ng-app="app">
         <div ng-controller="AppCtrl as appCtrl">
             <h1>{{appCtrl.model.title}}</h1>
-            <div class="cy-container">
-                <cy-graph data="appCtrl.model.data"></cy-graph>
+            <div>
+                <a ui-sref="cygraph" ui-sref-active="active">cytoscape</a>
+                <a ui-sref="d3graph" ui-sref-active="active">dagre-d3</a>
             </div>
+            <ui-view></ui-view>
         </div>
+        <script type="text/javscript" src="js/components/lodash/lodash.min.js"></script>
+        <script type="text/javscript" src="js/components/graphlib/dist/graphlib.core.min.js"></script>
+        <script type="text/javscript" src="js/components/dagre/dist/dagre.core.min.js"></script>
+        <script type="text/javscript" src="js/components/dagre-d3/dist/dagre-d3.core.min.js"></script>
         <script type="text/javascript" src="js/vendor.bundle.js" charset="utf-8"></script>
         <script type="text/javascript" src="js/app.bundle.js" charset="utf-8"></script>
     </body>
