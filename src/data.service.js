@@ -1,15 +1,13 @@
 module.exports = function dataServiceFactory($q) {
-    var danger = '#E92D18',
-        warning = '#ACD11F';
 
     var _mock = {
         nodes: [
-            { data: { id: 'n0', name: 'Input A', subtitle: 'Subtitle', type: danger } },
-            { data: { id: 'n1', name: 'Input A Received', subtitle: 'Subtitle', type: warning } },
-            { data: { id: 'n2', name: 'Process', subtitle: 'Subtitle', type: warning } },
-            { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: danger } },
-            { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: danger } },
-            { data: { id: 'n5', name: 'Input B Received', subtitle: 'Subtitle', type: warning } }
+            { data: { id: 'n0', name: 'Input A', subtitle: 'Subtitle', type: 'danger' } },
+            { data: { id: 'n1', name: 'Input A Received', subtitle: 'Subtitle', type: 'warning' } },
+            { data: { id: 'n2', name: 'Process', subtitle: 'Subtitle', type: 'warning' } },
+            { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: 'danger' } },
+            { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: 'danger' } },
+            { data: { id: 'n5', name: 'Input B Received', subtitle: 'Subtitle', type: 'warning' } }
         ],
         edges: [
             { data: { source: 'n0', target: 'n1' } },

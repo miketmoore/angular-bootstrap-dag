@@ -1,4 +1,4 @@
 node_modules
 public/js/*.js
-bower_components
+public/js/components
 .idea

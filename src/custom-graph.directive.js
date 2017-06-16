@@ -77,8 +77,20 @@ module.exports = function customGraph() {
 
     function _buildHtmlNode(nodeId, node) {
         var data = map.nodes[nodeId];
+        console.log(nodeId, node, data);
         var str = '<div class="node" style="width: ' + node.width + '; height: ' + node.height + '; top: ' + node.y + '; left: ' + node.x + '">';
-        str += '<div class="title">' + data.data.name + '</div>';
+
+        var titleClass = ['title'];
+        var type = data.data.type;
+        if (angular.isString(type)) {
+            titleClass.push(type);
+        }
+        str += '<div class="' + titleClass.join(' ') + '">' + data.data.name + '</div>';
+
+        var subtitleClass = ['subtitle'];
+        if (data.data.type && data.data.type === 'danger') {
+            titleClass.push('danger');
+        }
         str += '<div class="subtitle">' + data.data.subtitle + '</div>';
         str += '</div>';
         return str;

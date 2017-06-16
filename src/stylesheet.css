@@ -19,6 +19,12 @@ body {
     position: absolute;
     /*padding: 20px;*/
     /*margin: 10px;*/
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-color: #ccc;
+    box-shadow: 1px 1px 3px #eee;
 }
 
 .custom-graph .node .title {
@@ -26,9 +32,18 @@ body {
     top: 20px;
     left: 30px;
     text-transform: uppercase;
+    font-weight: 600;
+}
+.danger {
+    color: #e63025;
+}
+.warning {
+    color: #f7b600;
 }
 .custom-graph .node .subtitle {
     position: relative;
-    top: 30px;
+    top: 20px;
     left: 30px;
+    font-weight: 800;
+    font-size: 18px;
 }

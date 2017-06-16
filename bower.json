@@ -13,6 +13,7 @@
     "tests"
   ],
   "devDependencies": {
-    "dagre-d3": "^0.4.17"
+    "dagre-d3": "^0.4.17",
+    "bootstrap": "^3.3.7"
   }
 }
