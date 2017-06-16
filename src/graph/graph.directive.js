@@ -43,7 +43,10 @@ module.exports = function mmGraph() {
                 'text-halign': 'right',
                 'background-color': 'white',
                 'border-width': 0.25,
-                'border-color': '#b1b1b1'
+                'border-color': '#b1b1b1',
+                'label': 'data(name)',
+                'font-size': 4,
+                'text-halign': 'center',
               }
             },
 
@@ -60,12 +63,12 @@ module.exports = function mmGraph() {
 
           elements: {
             nodes: [
-                { data: { id: 'n0' } },
-                { data: { id: 'n1' } },
-                { data: { id: 'n2' } },
-                { data: { id: 'n3' } },
-                { data: { id: 'n4' } },
-                { data: { id: 'n5' } }
+                { data: { id: 'n0', name: 'Input A' } },
+                { data: { id: 'n1', name: 'Input A Received' } },
+                { data: { id: 'n2', name: 'Process' } },
+                { data: { id: 'n3', name: 'Complete' } },
+                { data: { id: 'n4', name: 'Input B' } },
+                { data: { id: 'n5', name: 'Input B Received' } }
             ],
             edges: [
                 { data: { source: 'n0', target: 'n1' } },
