@@ -3,7 +3,7 @@ module.exports = {
     context: __dirname + '/src',
     entry: {
         app: './app.js',
-        vendor: ['angular', 'cytoscape']
+        vendor: ['angular', 'dagre', 'cytoscape']
     },
     output: {
         path: __dirname + '/public/js',
