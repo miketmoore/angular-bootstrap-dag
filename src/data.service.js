@@ -2,12 +2,12 @@ module.exports = function dataServiceFactory($q) {
 
     var _mock = {
         nodes: [
-            { data: { id: 'n0', name: 'Input A', subtitle: 'Subtitle', type: 'danger' } },
-            { data: { id: 'n1', name: 'Input A Received', subtitle: 'Subtitle', type: 'warning' } },
-            { data: { id: 'n2', name: 'Process', subtitle: 'Subtitle', type: 'warning' } },
-            { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: 'danger' } },
-            { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: 'danger' } },
-            { data: { id: 'n5', name: 'Input B Received', subtitle: 'Subtitle', type: 'warning' } }
+            { data: { id: 'n0', name: 'Input A', subtitle: 'Subtitle', type: 'input' } },
+            { data: { id: 'n1', name: 'Input A Received', subtitle: 'Subtitle' } },
+            { data: { id: 'n2', name: 'Process', subtitle: 'Subtitle' } },
+            { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: 'final' } },
+            { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: 'input' } },
+            { data: { id: 'n5', name: 'Input B Received', subtitle: 'Subtitle' } }
         ],
         edges: [
             { data: { source: 'n0', target: 'n1' } },

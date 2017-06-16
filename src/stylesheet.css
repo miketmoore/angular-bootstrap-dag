@@ -47,3 +47,11 @@ body {
     font-weight: 800;
     font-size: 18px;
 }
+
+.custom-graph .node .icon {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    font-size: 34px;
+    color: #ccc;
+}

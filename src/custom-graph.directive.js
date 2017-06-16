@@ -83,16 +83,28 @@ module.exports = function customGraph() {
         var titleClass = ['title'];
         var type = data.data.type;
         if (angular.isString(type)) {
-            titleClass.push(type);
+            if (type === 'input' || type === 'final') {
+                titleClass.push('danger');
+            }
+        } else {
+            titleClass.push('warning');
         }
         str += '<div class="' + titleClass.join(' ') + '">' + data.data.name + '</div>';
 
-        var subtitleClass = ['subtitle'];
-        if (data.data.type && data.data.type === 'danger') {
-            titleClass.push('danger');
-        }
         str += '<div class="subtitle">' + data.data.subtitle + '</div>';
+
+        var iconClass = ['icon', 'glyphicon'];
+        if (angular.isString(type)) {
+            if (type === 'input') {
+                iconClass.push('glyphicon-inbox');
+            } else if (type === 'final') {
+                iconClass.push('glyphicon-hdd');
+            }
+        }
+        str += '<i class="' + iconClass.join(' ') + '"></i>';
+
         str += '</div>';
+
         return str;
     }
 
