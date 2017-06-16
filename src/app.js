@@ -5,5 +5,5 @@ var angular = require('angular');
 
 angular.module('app', [])
     .factory('dataService', require('./data/data.service.js'))
-    .directive('mmGraph', require('./graph/graph.directive.js'))
+    .directive('cyGraph', require('./graph/graph.directive.js'))
     .controller('AppCtrl', require('./app.controller.js'));

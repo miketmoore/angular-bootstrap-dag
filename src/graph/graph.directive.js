@@ -3,7 +3,7 @@ var dagre = require('dagre');
 var cydagre = require('cytoscape-dagre');
 cydagre(cytoscape);
 
-module.exports = function mmGraph() {
+module.exports = function cyGraph() {
     return {
         restrict: 'E',
         templateUrl: 'views/graph/graph.html',
