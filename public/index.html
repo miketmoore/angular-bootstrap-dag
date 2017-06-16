@@ -5,6 +5,7 @@
     <body ng-app="app">
         <div ng-controller="AppCtrl as appCtrl">
             <h1>{{appCtrl.model.title}}</h1>
+            <h2>{{appCtrl.model.subtitle}}</h2>
             <div>
                 <a ui-sref="cygraph" ui-sref-active="active">cytoscape</a>
                 <a ui-sref="d3graph" ui-sref-active="active">dagre-d3</a>
