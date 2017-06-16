@@ -50,8 +50,9 @@ module.exports = function cyGraph() {
                 'border-width': 0.25,
                 'border-color': '#b1b1b1',
                 'label': 'data(name)',
+                'color': 'data(type)',
                 'font-size': 4,
-                'text-halign': 'center',
+                'text-halign': 'center'
               }
             },
 
