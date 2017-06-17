@@ -22,19 +22,15 @@ body {
 
 .custom-graph {
   .node {
+    cursor: pointer;
     border: 1px solid #000;
     position: absolute;
-    /*padding: 20px;*/
-    /*margin: 10px;*/
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-color: #ccc;
     box-shadow: 1px 1px 3px #eee;
-  }
-  .node {
-
     background-color: #fff;
 
     .title {
