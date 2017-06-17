@@ -60,6 +60,10 @@ body {
     height: 6px;
 }
 
+.custom-graph .node {
+    background-color: #fff;
+}
+
 .custom-graph .node .percentage-container {
     margin-top: 20px;
     margin-left: 14px;
