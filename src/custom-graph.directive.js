@@ -43,7 +43,7 @@ function customGraph($templateRequest, $compile) {
             ranksep: 50,
             nodesep: 50,
             marginx: 0,
-            marginy: 150
+            marginy: 120
         });
 
         g.setDefaultEdgeLabel(function () {
@@ -67,8 +67,13 @@ function customGraph($templateRequest, $compile) {
 
         dagre.layout(g);
 
-        g.nodes().forEach(function (nodeId) {
+        var xPad = 20;
+        var xInc;
+        g.nodes().forEach(function (nodeId, i) {
             var node = g.node(nodeId);
+            if (i == 0) {
+                xInc = node.x;
+            }
             var linkFn = $compile('<custom-graph-node data="data"></custom-graph-node>');
             var data = map.nodes[nodeId].data;
             var nodeScope = $scope.$new(true);
@@ -82,59 +87,17 @@ function customGraph($templateRequest, $compile) {
                     percentageLabel: 'Percentage:',
                     height: node.height,
                     width: node.width,
-                    x: node.x,
+                    x: node.x - xInc + xPad,
                     y: node.y
                 }
             });
             var response = linkFn(nodeScope);
             console.log(response);
             elem.append(response);
-            // elem.append(_buildHtmlNodeInterpolated(v, node));
-            // elem.append(_buildHtmlNode(v, node));
         });
         // g.edges().forEach(function (e) {
         // console.log('Edge ' + e + ': ' + JSON.stringify(g.edge(e)));
         // });
-
-    }
-
-    function _buildHtmlNodeInterpolated(nodeId, node) {
-        var data = map.nodes[nodeId].data;
-        var interpolateFn = $interpolate(_template);
-        var response = interpolateFn({
-            title: data.name,
-            subtitle: data.subtitle,
-            titleClass: _getTitleClass(data.type),
-            iconClass: _getIconClass(data.type),
-            percentage: angular.isNumber(data.percentage) ? data.percentage : undefined
-        });
-
-        console.log(response);
-        return response;
-    }
-
-    function _buildHtmlNode(nodeId, node) {
-        var data = map.nodes[nodeId];
-        // console.log(nodeId, node, data);
-        var str = '<div class="node" style="width: ' + node.width + '; height: ' + node.height + '; top: ' + node.y + '; left: ' + node.x + '">';
-
-        var type = data.data.type;
-        str += '<div class="' + _getTitleClass(type) + '">' + data.data.name + '</div>';
-
-        str += '<div class="subtitle">' + data.data.subtitle + '</div>';
-
-        str += '<i class="' + _getIconClass(type) + '"></i>';
-
-        if (angular.isString(type)) {
-            if (type === 'receipt') {
-                str += '<uib-progressbar class="progressbar" animate="false" type="success" value="' + data.data.percentage + '"></uib-progressbar>';
-            }
-        }
-
-
-        str += '</div>';
-
-        return str;
     }
 
     function _getTitleClass(type) {
