@@ -1,6 +1,8 @@
 var dagre = require('dagre');
 
-module.exports = function customGraph() {
+customGraph.$inject = ['$templateRequest', '$compile'];
+
+function customGraph($templateRequest, $compile) {
     var map;
 
     return {
@@ -9,7 +11,7 @@ module.exports = function customGraph() {
         scope: {
             data: '='
         },
-        link: function($scope, elem, attrs, ctrl) {
+        link: function ($scope, elem, attrs, ctrl) {
             if ($scope.data) {
                 _buildMap($scope.data);
                 _build($scope, elem);
@@ -18,18 +20,18 @@ module.exports = function customGraph() {
     };
 
     function _buildMap(data) {
-       map = {
-           nodes: {},
-           edges: {}
-       };
+        map = {
+            nodes: {},
+            edges: {}
+        };
 
-       data.nodes.forEach(function (n) {
-           map.nodes[n.data.id] = n;
-       });
-       data.edges.forEach(function (e) {
-           var key = e.data.source + '~' + e.data.target;
-           map.edges[key] = e;
-       });
+        data.nodes.forEach(function (n) {
+            map.nodes[n.data.id] = n;
+        });
+        data.edges.forEach(function (e) {
+            var key = e.data.source + '~' + e.data.target;
+            map.edges[key] = e;
+        });
     }
 
     function _build($scope, elem) {
@@ -37,7 +39,7 @@ module.exports = function customGraph() {
             g = new dagre.graphlib.Graph();
 
         g.setGraph({
-            rankdir:'LR',
+            rankdir: 'LR',
             ranksep: 50,
             nodesep: 50,
             marginx: 0,
@@ -48,7 +50,7 @@ module.exports = function customGraph() {
             return {};
         });
 
-        var w = 300,
+        var w = 380,
             h = 90;
 
         data.nodes.forEach(function (node) {
@@ -65,47 +67,101 @@ module.exports = function customGraph() {
 
         dagre.layout(g);
 
-        g.nodes().forEach(function (v) {
-            var node = g.node(v);
-            elem.append(_buildHtmlNode(v, node));
+        g.nodes().forEach(function (nodeId) {
+            var node = g.node(nodeId);
+            var linkFn = $compile('<custom-graph-node data="data"></custom-graph-node>');
+            var data = map.nodes[nodeId].data;
+            var nodeScope = $scope.$new(true);
+            angular.extend(nodeScope, {
+                data: {
+                    title: data.name,
+                    subtitle: data.subtitle,
+                    titleClass: _getTitleClass(data.type),
+                    iconClass: _getIconClass(data.type),
+                    percentage: angular.isNumber(data.percentage) ? data.percentage : undefined,
+                    percentageLabel: 'Percentage:',
+                    height: node.height,
+                    width: node.width,
+                    x: node.x,
+                    y: node.y
+                }
+            });
+            var response = linkFn(nodeScope);
+            console.log(response);
+            elem.append(response);
+            // elem.append(_buildHtmlNodeInterpolated(v, node));
+            // elem.append(_buildHtmlNode(v, node));
         });
-        g.edges().forEach(function (e) {
-            console.log('Edge ' + e + ': ' + JSON.stringify(g.edge(e)));
+        // g.edges().forEach(function (e) {
+        // console.log('Edge ' + e + ': ' + JSON.stringify(g.edge(e)));
+        // });
+
+    }
+
+    function _buildHtmlNodeInterpolated(nodeId, node) {
+        var data = map.nodes[nodeId].data;
+        var interpolateFn = $interpolate(_template);
+        var response = interpolateFn({
+            title: data.name,
+            subtitle: data.subtitle,
+            titleClass: _getTitleClass(data.type),
+            iconClass: _getIconClass(data.type),
+            percentage: angular.isNumber(data.percentage) ? data.percentage : undefined
         });
 
+        console.log(response);
+        return response;
     }
 
     function _buildHtmlNode(nodeId, node) {
         var data = map.nodes[nodeId];
-        console.log(nodeId, node, data);
+        // console.log(nodeId, node, data);
         var str = '<div class="node" style="width: ' + node.width + '; height: ' + node.height + '; top: ' + node.y + '; left: ' + node.x + '">';
 
-        var titleClass = ['title'];
         var type = data.data.type;
-        if (angular.isString(type)) {
-            if (type === 'input' || type === 'final') {
-                titleClass.push('danger');
-            }
-        } else {
-            titleClass.push('warning');
-        }
-        str += '<div class="' + titleClass.join(' ') + '">' + data.data.name + '</div>';
+        str += '<div class="' + _getTitleClass(type) + '">' + data.data.name + '</div>';
 
         str += '<div class="subtitle">' + data.data.subtitle + '</div>';
 
-        var iconClass = ['icon', 'glyphicon'];
+        str += '<i class="' + _getIconClass(type) + '"></i>';
+
         if (angular.isString(type)) {
-            if (type === 'input') {
-                iconClass.push('glyphicon-inbox');
-            } else if (type === 'final') {
-                iconClass.push('glyphicon-hdd');
+            if (type === 'receipt') {
+                str += '<uib-progressbar class="progressbar" animate="false" type="success" value="' + data.data.percentage + '"></uib-progressbar>';
             }
         }
-        str += '<i class="' + iconClass.join(' ') + '"></i>';
+
 
         str += '</div>';
 
         return str;
     }
 
+    function _getTitleClass(type) {
+        var c = ['title'];
+        if (angular.isString(type)) {
+            if (type === 'input' || type === 'final') {
+                c.push('danger');
+            } else if (type === 'receipt') {
+                c.push('warning');
+            }
+        } else {
+            c.push('warning');
+        }
+        return c.join(' ');
+    }
+
+    function _getIconClass(type) {
+        var c = ['icon', 'glyphicon'];
+        if (angular.isString(type)) {
+            if (type === 'input') {
+                c.push('glyphicon-inbox');
+            } else if (type === 'final') {
+                c.push('glyphicon-hdd');
+            }
+        }
+        return c.join(' ');
+    }
 };
+
+module.exports = customGraph;

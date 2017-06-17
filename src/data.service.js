@@ -3,11 +3,11 @@ module.exports = function dataServiceFactory($q) {
     var _mock = {
         nodes: [
             { data: { id: 'n0', name: 'Input A', subtitle: 'Subtitle', type: 'input' } },
-            { data: { id: 'n1', name: 'Input A Received', subtitle: 'Subtitle' } },
+            { data: { id: 'n1', name: 'Input A Received', type: 'receipt', percentage: 88 } },
             { data: { id: 'n2', name: 'Process', subtitle: 'Subtitle' } },
             { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: 'final' } },
             { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: 'input' } },
-            { data: { id: 'n5', name: 'Input B Received', subtitle: 'Subtitle' } }
+            { data: { id: 'n5', name: 'Input B Received', type: 'receipt', percentage: 25 } }
         ],
         edges: [
             { data: { source: 'n0', target: 'n1' } },

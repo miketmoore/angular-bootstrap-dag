@@ -1,0 +1,12 @@
+<div class="node" ng-style="{ width: data.width, height: data.height, top: data.y, left: data.x }">
+    <div ng-class="data.titleClass">{{data.title}}</div>
+    <div ng-if="data.subtitle" class="subtitle">{{data.subtitle}}</div>
+    <i ng-class="data.iconClass"></i>
+    <div class="percentage-container" ng-if="data.percentage">
+        <span class="percentage-col percentage-label">{{data.percentageLabel}}</span>
+        <span class="percentage-col">
+            <uib-progressbar animate="true" value="data.percentage" type="success" class="progressbar-xs"></uib-progressbar>
+        </span>
+        <span class="percentage-col percentage-num">{{data.percentage}}%</spanc>
+    </div>
+</div>

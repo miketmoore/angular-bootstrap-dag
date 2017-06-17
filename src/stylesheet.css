@@ -55,3 +55,34 @@ body {
     font-size: 34px;
     color: #ccc;
 }
+
+.progressbar-xs {
+    height: 6px;
+}
+
+.custom-graph .node .percentage-container {
+    margin-top: 20px;
+    margin-left: 14px;
+    display: flex;
+    flex-direction: row;
+}
+.custom-graph .node .percentage-label {
+    font-size: 18px;
+    font-weight: 800;
+}
+.custom-graph .node .percentage-container .percentage-col {
+    flex: 1;
+}
+.custom-graph .node .percentage-container .percentage-col.percentage-label {
+    margin-left: 15px;
+    flex: 0.8;
+}
+.custom-graph .node .percentage-container .percentage-col .progress {
+    flex: 2;
+    margin-top: 11px;
+}
+.custom-graph .node .percentage-container .percentage-col.percentage-num {
+    margin-top: 4px;
+    text-align: center;
+    flex: 0.5;
+}
