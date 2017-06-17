@@ -1,6 +1,6 @@
 'use strict';
 
-require("style-loader!./stylesheet.css");
+require("style-loader!./stylesheet.scss");
 var angular = require('angular');
 var ngAnimate = require('angular-animate');
 var uirouter = require('angular-ui-router');
