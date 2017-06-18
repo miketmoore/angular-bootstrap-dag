@@ -3,7 +3,8 @@ var dagre = require('dagre');
 customGraph.$inject = ['$templateRequest', '$compile'];
 
 function customGraph($templateRequest, $compile) {
-    var map;
+    var _map,
+        _parentDimensions;
 
     return {
         restrict: 'E',
@@ -11,27 +12,35 @@ function customGraph($templateRequest, $compile) {
         scope: {
             data: '='
         },
-        link: function ($scope, elem, attrs, ctrl) {
-            if ($scope.data) {
-                _buildMap($scope.data);
-                _build($scope, elem);
-            }
-        }
+        link: link
     };
 
+    function link($scope, elem, attrs, ctrl) {
+        if ($scope.data) {
+            _calculateParentDimensions(elem);
+            _buildMap($scope.data);
+            _build($scope, elem);
+        }
+    }
+
     function _buildMap(data) {
-        map = {
+        _map = {
             nodes: {},
             edges: {}
         };
 
         data.nodes.forEach(function (n) {
-            map.nodes[n.data.id] = n;
+            _map.nodes[n.data.id] = n;
         });
         data.edges.forEach(function (e) {
             var key = e.data.source + '~' + e.data.target;
-            map.edges[key] = e;
+            _map.edges[key] = e;
         });
+    }
+
+    function _calculateParentDimensions(elem) {
+        var parent = elem.parent()[0];
+        _parentDimensions = {width:parent.clientWidth, height:parent.clientHeight};
     }
 
     function _build($scope, elem) {
@@ -77,7 +86,7 @@ function customGraph($templateRequest, $compile) {
                 yInc = node.y;
             }
             var linkFn = $compile('<custom-graph-node data="data"></custom-graph-node>');
-            var data = map.nodes[nodeId].data;
+            var data = _map.nodes[nodeId].data;
             var nodeScope = $scope.$new(true);
             angular.extend(nodeScope, {
                 data: {
