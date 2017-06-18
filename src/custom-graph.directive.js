@@ -67,12 +67,14 @@ function customGraph($templateRequest, $compile) {
 
         dagre.layout(g);
 
-        var xPad = 20;
+        var pad = 20;
         var xInc;
+        var yInc;
         g.nodes().forEach(function (nodeId, i) {
             var node = g.node(nodeId);
             if (i == 0) {
                 xInc = node.x;
+                yInc = node.y;
             }
             var linkFn = $compile('<custom-graph-node data="data"></custom-graph-node>');
             var data = map.nodes[nodeId].data;
@@ -87,8 +89,8 @@ function customGraph($templateRequest, $compile) {
                     percentageLabel: 'Percentage:',
                     height: node.height,
                     width: node.width,
-                    x: node.x - xInc + xPad,
-                    y: node.y
+                    x: node.x - xInc + pad,
+                    y: node.y - yInc + pad
                 }
             });
             var response = linkFn(nodeScope);

@@ -3,13 +3,13 @@
         <meta charset="utf-8">
         <link rel="stylesheet" media="screen" type="text/css" href="js/components/bootstrap/dist/css/bootstrap.min.css"
     </head>
-    <body ng-app="app">
-        <div ng-controller="AppCtrl as appCtrl">
+    <body ng-app="app" ng-controller="AppCtrl as appCtrl">
+        <div class="container-responsive">
             <h1>{{appCtrl.model.title}}</h1>
-            <h2>{{appCtrl.model.subtitle}}</h2>
-            <div>
-                <a ui-sref="cyGraph" ui-sref-active="active">cytoscape</a>
-                <a ui-sref="customGraph" ui-sref-active="active">custom</a>
+            <div class="lead">{{appCtrl.model.subtitle}}</div>
+            <div class="nav">
+                <a ui-sref="customGraph" ui-sref-active="active">Custom</a>
+                <a ui-sref="cyGraph" ui-sref-active="active">Cytoscape.js</a>
             </div>
             <ui-view></ui-view>
         </div>
