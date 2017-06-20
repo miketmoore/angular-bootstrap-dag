@@ -49,7 +49,7 @@ function customGraph($templateRequest, $compile) {
 
         g.setGraph({
             rankdir: 'LR',
-            ranksep: 50,
+            ranksep: 32,
             nodesep: 50,
             marginx: 0,
             marginy: 120
@@ -59,8 +59,8 @@ function customGraph($templateRequest, $compile) {
             return {};
         });
 
-        var w = 380,
-            h = 90;
+        var w = 300,
+            h = 70;
 
         data.nodes.forEach(function (node) {
             g.setNode(node.data.id, {
