@@ -7,7 +7,6 @@ function CustomGraphCtrl(dataService) {
         vm.model = {};
         dataService.get()
             .then(function (data) {
-                console.log('CustomGraphCtrl resolve ', data);
                 vm.model.data = data;
             });
     }
