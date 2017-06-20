@@ -98,17 +98,38 @@ function customGraph($templateRequest, $compile) {
                     percentageLabel: 'Percentage:',
                     height: node.height,
                     width: node.width,
-                    x: node.x - xInc + pad,
-                    y: node.y - yInc + pad
+                    x: node.x,
+                    y: node.y
+                    // x: node.x - xInc,
+                    // y: node.y - 35
+                    // x: node.x - xInc + pad,
+                    // y: node.y - yInc + pad
                 }
             });
-            var response = linkFn(nodeScope);
-            console.log(response);
-            elem.append(response);
+            elem.find('.nodes').append(linkFn(nodeScope));
         });
-        // g.edges().forEach(function (e) {
-        // console.log('Edge ' + e + ': ' + JSON.stringify(g.edge(e)));
-        // });
+
+        $scope.edges = [];
+        g.edges().forEach(function (e) {
+            var sourceNodeId = e.v,
+                targetNodeId = e.w,
+                sourceNodeLayoutData = g.node(sourceNodeId),
+                targetNodeLayoutData = g.node(targetNodeId);
+            console.log('Edge : ' + JSON.stringify(g.edge(e)));
+            var ax = sourceNodeLayoutData.x + sourceNodeLayoutData.width;
+            var ay = sourceNodeLayoutData.y + (sourceNodeLayoutData.height/2);
+            var bx = targetNodeLayoutData.x;
+            var by = targetNodeLayoutData.y + (targetNodeLayoutData.height/2);
+            console.log(ax, ay);
+            // var $el = angular.element('<line x1="' + ax + '" y1="' + ay + '" x2="' + (ax + 200) + '" y2="' + (ay + 200) + '"/>');
+            // elem.find('.edges').append($el);
+            $scope.edges.push({
+                x1: ax,
+                y1: ay,
+                x2: bx,
+                y2: by
+            });
+        });
     }
 
     function _getTitleClass(type) {
