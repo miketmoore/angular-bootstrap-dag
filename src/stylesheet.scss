@@ -23,7 +23,7 @@ body {
   }
 }
 
-.custom-graph {
+.custom-graph-container {
   position: relative;
   width: 100%;
   height: 100%;
@@ -42,15 +42,15 @@ body {
 
     .title {
       position: relative;
-      top: 20px;
-      left: 30px;
+      top: 10px;
+      left: 20px;
       text-transform: uppercase;
       font-weight: 600;
     }
     .subtitle {
       position: relative;
-      top: 20px;
-      left: 30px;
+      top: 13px;
+      left: 20px;
       font-weight: 800;
       font-size: 18px;
     }
@@ -62,20 +62,22 @@ body {
       color: #ccc;
     }
     .percentage-container {
-      margin-top: 20px;
-      margin-left: 14px;
+      margin-top: 13px;
+      margin-left: 5px;
       display: flex;
       flex-direction: row;
       .percentage-col {
+        //outline: 1px solid #000;
         flex: 1;
         &.percentage-label {
           margin-left: 15px;
-          flex: 0.8;
+          flex: 1;
         }
         &.percentage-num {
           margin-top: 4px;
-          text-align: center;
+          //text-align: center;
           flex: 0.5;
+          margin-left: 8px;
         }
         .progress {
           flex: 2;
