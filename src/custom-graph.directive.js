@@ -110,7 +110,7 @@ function customGraph($templateRequest, $compile) {
         });
 
         _drawEdgesSimple($scope, g);
-        _drawEdgesComplex($scope, g);
+        // _drawEdgesComplex($scope, g);
     }
 
     function _drawEdgesSimple($scope, g) {
@@ -141,31 +141,63 @@ function customGraph($templateRequest, $compile) {
             if (coords.y1 === coords.y2) {
                 $scope.edges.push(coords);
             } else if (coords.y2 > coords.y1) {
-                // getting complicated
-                // 1) draw across x halfway
-                // 2) draw down y
-                // 3) draw across x halfway
-                var e1 = {
-                    x1: coords.x1,
-                    y1: coords.y1,
-                    x2: coords.x1 + ((coords.x2 - coords.x1) / 2),
-                    y2: coords.y1
-                };
-                var e2 = {
-                    x1: e1.x2,
-                    y1: e1.y2,
-                    x2: e1.x2,
-                    y2: coords.y2
-                };
-                var e3 = {
-                    x1: e2.x2,
-                    y1: coords.y2,
-                    x2: coords.x2,
-                    y2: coords.y2
-                };
-                $scope.edges = $scope.edges.concat([e1,e2,e3]);
+                $scope.edges = $scope.edges.concat(_drawSouthEast(coords));
+            } else if (coords.y2 < coords.y1) {
+                $scope.edges = $scope.edges.concat(_drawNorthEast(coords));
             }
         });
+    }
+
+    function _drawSouthEast(coords) {
+        // getting complicated
+        // 1) draw across x halfway
+        // 2) draw south y
+        // 3) draw across x halfway
+        var e1 = {
+            x1: coords.x1,
+            y1: coords.y1,
+            x2: coords.x1 + ((coords.x2 - coords.x1) / 2),
+            y2: coords.y1
+        };
+        var e2 = {
+            x1: e1.x2,
+            y1: e1.y2,
+            x2: e1.x2,
+            y2: coords.y2
+        };
+        var e3 = {
+            x1: e2.x2,
+            y1: coords.y2,
+            x2: coords.x2,
+            y2: coords.y2
+        };
+        return [e1,e2,e3];
+    }
+
+    function _drawNorthEast(coords) {
+        // getting complicated
+        // 1) draw across x halfway
+        // 2) draw north y
+        // 3) draw across x halfway
+        var e1 = {
+            x1: coords.x1,
+            y1: coords.y1,
+            x2: coords.x1 + ((coords.x2 - coords.x1) / 2),
+            y2: coords.y1
+        };
+        var e2 = {
+            x1: e1.x2,
+            y1: coords.y2,
+            x2: e1.x2,
+            y2: e1.y2
+        };
+        var e3 = {
+            x1: e2.x2,
+            y1: coords.y2,
+            x2: coords.x2,
+            y2: coords.y2
+        };
+        return [e1,e2,e3];
     }
 
     function _getTitleClass(type) {
