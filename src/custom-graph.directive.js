@@ -109,10 +109,11 @@ function customGraph($templateRequest, $compile) {
             elem.find('.nodes').append(linkFn(nodeScope));
         });
 
-        _drawEdges($scope, g);
+        _drawEdgesSimple($scope, g);
+        _drawEdgesComplex($scope, g);
     }
 
-    function _drawEdges($scope, g) {
+    function _drawEdgesSimple($scope, g) {
         $scope.edges = [];
         g.edges().forEach(function (e) {
             var layoutSource = g.node(e.v);
@@ -123,6 +124,47 @@ function customGraph($templateRequest, $compile) {
                 x2 : layoutTarget.x,
                 y2 : layoutTarget.y + (layoutTarget.height / 2)
             });
+        });
+    }
+
+    function _drawEdgesComplex($scope, g) {
+        $scope.edges = [];
+        g.edges().forEach(function (e) {
+            var layoutSource = g.node(e.v);
+            var layoutTarget = g.node(e.w);
+            var coords = {
+                x1 : layoutSource.x + layoutSource.width,
+                y1 : layoutSource.y + (layoutSource.height / 2),
+                x2 : layoutTarget.x,
+                y2 : layoutTarget.y + (layoutTarget.height / 2)
+            };
+            if (coords.y1 === coords.y2) {
+                $scope.edges.push(coords);
+            } else if (coords.y2 > coords.y1) {
+                // getting complicated
+                // 1) draw across x halfway
+                // 2) draw down y
+                // 3) draw across x halfway
+                var e1 = {
+                    x1: coords.x1,
+                    y1: coords.y1,
+                    x2: coords.x1 + ((coords.x2 - coords.x1) / 2),
+                    y2: coords.y1
+                };
+                var e2 = {
+                    x1: e1.x2,
+                    y1: e1.y2,
+                    x2: e1.x2,
+                    y2: coords.y2
+                };
+                var e3 = {
+                    x1: e2.x2,
+                    y1: coords.y2,
+                    x2: coords.x2,
+                    y2: coords.y2
+                };
+                $scope.edges = $scope.edges.concat([e1,e2,e3]);
+            }
         });
     }
 
