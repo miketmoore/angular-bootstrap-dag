@@ -40,7 +40,7 @@ function customGraph($templateRequest, $compile) {
 
     function _calculateParentDimensions(elem) {
         var parent = elem.parent()[0];
-        _parentDimensions = {width:parent.clientWidth, height:parent.clientHeight};
+        _parentDimensions = {width: parent.clientWidth, height: parent.clientHeight};
     }
 
     function _build($scope, elem) {
@@ -109,25 +109,19 @@ function customGraph($templateRequest, $compile) {
             elem.find('.nodes').append(linkFn(nodeScope));
         });
 
+        _drawEdges($scope, g);
+    }
+
+    function _drawEdges($scope, g) {
         $scope.edges = [];
         g.edges().forEach(function (e) {
-            var sourceNodeId = e.v,
-                targetNodeId = e.w,
-                sourceNodeLayoutData = g.node(sourceNodeId),
-                targetNodeLayoutData = g.node(targetNodeId);
-            console.log('Edge : ' + JSON.stringify(g.edge(e)));
-            var ax = sourceNodeLayoutData.x + sourceNodeLayoutData.width;
-            var ay = sourceNodeLayoutData.y + (sourceNodeLayoutData.height/2);
-            var bx = targetNodeLayoutData.x;
-            var by = targetNodeLayoutData.y + (targetNodeLayoutData.height/2);
-            console.log(ax, ay);
-            // var $el = angular.element('<line x1="' + ax + '" y1="' + ay + '" x2="' + (ax + 200) + '" y2="' + (ay + 200) + '"/>');
-            // elem.find('.edges').append($el);
+            var layoutSource = g.node(e.v);
+            var layoutTarget = g.node(e.w);
             $scope.edges.push({
-                x1: ax,
-                y1: ay,
-                x2: bx,
-                y2: by
+                x1 : layoutSource.x + layoutSource.width,
+                y1 : layoutSource.y + (layoutSource.height / 2),
+                x2 : layoutTarget.x,
+                y2 : layoutTarget.y + (layoutTarget.height / 2)
             });
         });
     }
