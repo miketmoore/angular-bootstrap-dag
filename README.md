@@ -7,7 +7,7 @@ HTML & SVG Directed Acyclic Graph
 Install and run the dev server 
 
 ```
-npm install && npm run dev
+npm install && bower install && npm run dev
 ```
 
 Open at http://127.0.0.1:3000
