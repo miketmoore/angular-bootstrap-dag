@@ -1,4 +1,5 @@
-# horizontal-graph-theory
+# angular-bootstrap-dag
+
 HTML & SVG Directed Acyclic Graph
 
 ## Installation
