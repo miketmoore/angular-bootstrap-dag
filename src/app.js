@@ -12,7 +12,7 @@ angular.module('app', ['ngAnimate', 'ui.router', 'ui.bootstrap'])
     .controller('AppCtrl', require('./app.controller'))
 
     .controller('CustomGraphCtrl', require('./custom-graph.controller'))
-    .directive('customGraphNode', require('./custom-graph-node.directive'))
+    .directive('mmGraphNode', require('./mm-graph-node.directive'))
     .directive('mmGraph', require('./mm-graph.directive'))
 
     .config(require('./app.config'));

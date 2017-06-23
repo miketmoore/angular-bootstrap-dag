@@ -85,7 +85,7 @@ function mmGraph($templateRequest, $compile) {
                 xInc = node.x;
                 yInc = node.y;
             }
-            var linkFn = $compile('<custom-graph-node data="data"></custom-graph-node>');
+            var linkFn = $compile('<mm-graph-node data="data"></mm-graph-node>');
             var data = _map.nodes[nodeId].data;
             var nodeScope = $scope.$new(true);
             angular.extend(nodeScope, {
