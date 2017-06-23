@@ -8,10 +8,6 @@ module.exports = function dataServiceFactory($q) {
             { data: { id: 'n3', name: 'Complete', subtitle: 'Subtitle', type: 'final' } },
             { data: { id: 'n4', name: 'Input B', subtitle: 'Subtitle', type: 'input' } },
             { data: { id: 'n5', name: 'Input B Received', type: 'receipt', percentage: 25 } }
-
-            // { data: {id: 'n6', name: 'Foo' } },
-            // { data: {id: 'n7', name: 'Bar' } },
-            // { data: {id: 'n8', name: 'FooBar' } }
         ],
         edges: [
             { data: { source: 'n0', target: 'n1' } },
@@ -19,10 +15,6 @@ module.exports = function dataServiceFactory($q) {
             { data: { source: 'n2', target: 'n3' } },
             { data: { source: 'n4', target: 'n5' } },
             { data: { source: 'n5', target: 'n2' } }
-
-            // { data: { source: 'n6', target: 'n2'}},
-            // { data: { source: 'n7', target: 'n5'}},
-            // { data: { source: 'n1', target: 'n8'}},
         ]
     };
 
