@@ -1,8 +1,8 @@
 var dagre = require('dagre');
 
-mmGraph.$inject = ['$compile', 'mmGraphService'];
+mmGraph.$inject = ['mmGraphService'];
 
-function mmGraph($compile, mmGraphService) {
+function mmGraph(mmGraphService) {
 
     return {
         restrict: 'E',
@@ -36,44 +36,35 @@ function mmGraph($compile, mmGraphService) {
                     height: 70
                 }
             });
-            var scopeFactory = function () {
-                return $scope.$new(true);
-            };
-            _drawNodes(scopeFactory, elem, gm);
-            ctrl.edges = _drawEdgesSimple(gm);
+            ctrl.setNodes(_drawNodes(gm));
+            ctrl.setEdges(_drawEdgesSimple(gm));
         }
     }
 
-    function _drawNodes(scopeFactory, elem, graphModel) {
+    function _drawNodes(graphModel) {
         var nodeIds = graphModel.getNodeIds(),
             nodeId,
             node,
-            tpl = '<mm-graph-node data="data"></mm-graph-node>',
-            linkFn,
-            nodeScope,
             i = 0,
-            len = nodeIds.length;
+            len = nodeIds.length,
+            viewNodes = [];
         for (; i < len; i++) {
             nodeId = nodeIds[i];
             node = graphModel.getNodeById(nodeId);
-            linkFn = $compile(tpl);
-            nodeScope = scopeFactory();
-            angular.extend(nodeScope, {
-                data: {
-                    title: node.data.name,
-                    subtitle: node.data.subtitle,
-                    titleClass: _getTitleClass(node.data.type),
-                    iconClass: _getIconClass(node.data.type),
-                    percentage: angular.isNumber(node.data.percentage) ? node.data.percentage : undefined,
-                    percentageLabel: 'Percentage:',
-                    height: node.layout.height,
-                    width: node.layout.width,
-                    x: node.layout.x,
-                    y: node.layout.y
-                }
+            viewNodes.push({
+                title: node.data.name,
+                subtitle: node.data.subtitle,
+                titleClass: _getTitleClass(node.data.type),
+                iconClass: _getIconClass(node.data.type),
+                percentage: angular.isNumber(node.data.percentage) ? node.data.percentage : undefined,
+                percentageLabel: 'Percentage:',
+                height: node.layout.height,
+                width: node.layout.width,
+                x: node.layout.x,
+                y: node.layout.y
             });
-            elem.find('.nodes').append(linkFn(nodeScope));
         }
+        return viewNodes;
     }
 
     function _getTitleClass(type) {
