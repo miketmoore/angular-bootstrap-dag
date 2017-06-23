@@ -1,59 +1,23 @@
 var dagre = require('dagre');
 
-function mmGraphCtrl() {
+mmGraphCtrl.$inject = ['mmGraphService'];
+
+function mmGraphCtrl(mmGraphService) {
     var vm = this;
-    var _parent;
-    var _parentDimensions;
-    var _elem;
 
     angular.extend(vm, {
         activate: activate
     });
 
     function activate(params) {
-        _elem = params.elem;
-        _width = params.width;
-        _height = params.height;
-        console.log('mmGraphCtrl init ', vm.data);
-        _parent = _elem.parent()[0];
-        _calculateParentDimensions();
-        _buildMap();
-        _buildGraphModel();
-    }
-
-    function _calculateParentDimensions() {
-        _parentDimensions = {width: _parent.clientWidth, height: _parent.clientHeight};
-    }
-
-    function _buildMap(data) {
-        vm.map = {
-            nodes: {},
-            edges: {}
-        };
-        _mapNodes();
-        _mapEdges();
-    }
-
-    function _mapNodes() {
-        var i = 0,
-            len = vm.data.nodes.length,
-            node;
-        for (; i < len; i++) {
-            node = vm.data.nodes[i];
-            vm.map.nodes[node.data.id] = node;
-        }
-    }
-
-    function _mapEdges() {
-        var i = 0,
-            len = vm.data.edges.length,
-            edge,
-            key;
-        for (; i < len; i++) {
-            edge = vm.data.edges[i];
-            key = edge.data.source + '~' + edge.data.target;
-            vm.map.edges[key] = edge;
-        }
+        // var gm = mmGraphService.getInstance({
+        //     data: vm.data,
+        //     containerLayout: params.containerLayout,
+        //     // Don't allow rankdir to be overridden
+        //     graphLayout: angular.extend(params.graphLayout, { rankdir: 'LR'}),
+        //     nodeLayout: params.nodeLayout
+        // });
+        // _buildGraphModel();
     }
 
     function _buildGraphModel() {

@@ -1,8 +1,8 @@
 var dagre = require('dagre');
 
-mmGraph.$inject = ['$templateRequest', '$compile'];
+mmGraph.$inject = ['$templateRequest', '$compile', 'mmGraphService'];
 
-function mmGraph($templateRequest, $compile) {
+function mmGraph($templateRequest, $compile, mmGraphService) {
     var _map,
         _parentDimensions;
 
@@ -20,22 +20,45 @@ function mmGraph($templateRequest, $compile) {
 
     function link($scope, elem, attrs, ctrl) {
         if (ctrl.data) {
-            ctrl.activate({
-                elem: elem,
-                width: 300,
-                height: 70
+            var parent = elem.parent()[0];
+            var gm = mmGraphService.getInstance({
+                data: ctrl.data,
+                containerLayout: {
+                    width: parent.clientWidth,
+                    height: parent.clientHeight
+                },
+                graphLayout: {
+                    ranksep: 32,
+                    nodesep: 50,
+                    marginx: 0,
+                    marginy: 120
+                },
+                nodeLayout: {
+                    width: 300,
+                    height: 70
+                }
             });
-            _drawNodes($scope, elem, ctrl.map, ctrl.graphModel);
-            _drawEdgesSimple($scope, ctrl.graphModel);
+            _drawNodes($scope, elem, gm);
+            _drawEdgesSimple($scope, gm);
         }
     }
 
-    function _drawNodes($scope, elem, map, graphModel) {
-        graphModel.nodes().forEach(function (nodeId, i) {
-            var node = graphModel.node(nodeId);
-            var linkFn = $compile('<mm-graph-node data="data"></mm-graph-node>');
-            var data = map.nodes[nodeId].data;
-            var nodeScope = $scope.$new(true);
+    function _drawNodes($scope, elem, graphModel) {
+        var nodeIds = graphModel.getNodeIds(),
+            nodeId,
+            nodeLayout,
+            data,
+            tpl = '<mm-graph-node data="data"></mm-graph-node>',
+            linkFn,
+            nodeScope,
+            i = 0,
+            len = nodeIds.length;
+        for (; i < len; i++) {
+            nodeId = nodeIds[i];
+            nodeLayout = graphModel.getNodeLayout(nodeId);
+            data = graphModel.getNodeById(nodeId).data;
+            linkFn = $compile(tpl),
+            nodeScope = $scope.$new(true);
             angular.extend(nodeScope, {
                 data: {
                     title: data.name,
@@ -44,14 +67,14 @@ function mmGraph($templateRequest, $compile) {
                     iconClass: _getIconClass(data.type),
                     percentage: angular.isNumber(data.percentage) ? data.percentage : undefined,
                     percentageLabel: 'Percentage:',
-                    height: node.height,
-                    width: node.width,
-                    x: node.x,
-                    y: node.y
+                    height: nodeLayout.height,
+                    width: nodeLayout.width,
+                    x: nodeLayout.x,
+                    y: nodeLayout.y
                 }
             });
             elem.find('.nodes').append(linkFn(nodeScope));
-        });
+        }
     }
 
     function _getTitleClass(type) {
@@ -82,14 +105,15 @@ function mmGraph($templateRequest, $compile) {
 
     function _drawEdgesSimple($scope, graphModel) {
         $scope.edges = [];
-        graphModel.edges().forEach(function (e) {
-            var layoutSource = graphModel.node(e.v);
-            var layoutTarget = graphModel.node(e.w);
+        var edges = graphModel.getEdges();
+        edges.forEach(function (e) {
+            var layoutSource = graphModel.getNodeLayout(e.v);
+            var layoutTarget = graphModel.getNodeLayout(e.w);
             $scope.edges.push({
-                x1 : layoutSource.x + layoutSource.width,
-                y1 : layoutSource.y + (layoutSource.height / 2),
-                x2 : layoutTarget.x,
-                y2 : layoutTarget.y + (layoutTarget.height / 2)
+                x1: layoutSource.x + layoutSource.width,
+                y1: layoutSource.y + (layoutSource.height / 2),
+                x2: layoutTarget.x,
+                y2: layoutTarget.y + (layoutTarget.height / 2)
             });
         });
     }
