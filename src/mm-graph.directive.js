@@ -1,14 +1,14 @@
 var dagre = require('dagre');
 
-customGraph.$inject = ['$templateRequest', '$compile'];
+mmGraph.$inject = ['$templateRequest', '$compile'];
 
-function customGraph($templateRequest, $compile) {
+function mmGraph($templateRequest, $compile) {
     var _map,
         _parentDimensions;
 
     return {
         restrict: 'E',
-        templateUrl: 'views/custom-graph.html',
+        templateUrl: 'views/mm-graph.html',
         scope: {
             data: '='
         },
@@ -227,4 +227,4 @@ function customGraph($templateRequest, $compile) {
     }
 };
 
-module.exports = customGraph;
+module.exports = mmGraph;
