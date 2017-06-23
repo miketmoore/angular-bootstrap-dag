@@ -9,84 +9,32 @@ function mmGraph($templateRequest, $compile) {
     return {
         restrict: 'E',
         templateUrl: 'views/mm-graph.html',
-        scope: {
+        controller: 'mmGraphCtrl',
+        controllerAs: 'mmGraphCtrl',
+        scope: true,
+        bindToController: {
             data: '='
         },
         link: link
     };
 
     function link($scope, elem, attrs, ctrl) {
-        if ($scope.data) {
-            _calculateParentDimensions(elem);
-            _buildMap($scope.data);
-            _build($scope, elem);
+        if (ctrl.data) {
+            ctrl.activate({
+                elem: elem,
+                width: 300,
+                height: 70
+            });
+            _drawNodes($scope, elem, ctrl.map, ctrl.graphModel);
+            _drawEdgesSimple($scope, ctrl.graphModel);
         }
     }
 
-    function _buildMap(data) {
-        _map = {
-            nodes: {},
-            edges: {}
-        };
-
-        data.nodes.forEach(function (n) {
-            _map.nodes[n.data.id] = n;
-        });
-        data.edges.forEach(function (e) {
-            var key = e.data.source + '~' + e.data.target;
-            _map.edges[key] = e;
-        });
-    }
-
-    function _calculateParentDimensions(elem) {
-        var parent = elem.parent()[0];
-        _parentDimensions = {width: parent.clientWidth, height: parent.clientHeight};
-    }
-
-    function _build($scope, elem) {
-        var data = $scope.data,
-            g = new dagre.graphlib.Graph();
-
-        g.setGraph({
-            rankdir: 'LR',
-            ranksep: 32,
-            nodesep: 50,
-            marginx: 0,
-            marginy: 120
-        });
-
-        g.setDefaultEdgeLabel(function () {
-            return {};
-        });
-
-        var w = 300,
-            h = 70;
-
-        data.nodes.forEach(function (node) {
-            g.setNode(node.data.id, {
-                label: node.data.name,
-                width: w,
-                height: h
-            });
-        });
-
-        data.edges.forEach(function (edge) {
-            g.setEdge(edge.data.source, edge.data.target);
-        });
-
-        dagre.layout(g);
-
-        var pad = 20;
-        var xInc;
-        var yInc;
-        g.nodes().forEach(function (nodeId, i) {
-            var node = g.node(nodeId);
-            if (i == 0) {
-                xInc = node.x;
-                yInc = node.y;
-            }
+    function _drawNodes($scope, elem, map, graphModel) {
+        graphModel.nodes().forEach(function (nodeId, i) {
+            var node = graphModel.node(nodeId);
             var linkFn = $compile('<mm-graph-node data="data"></mm-graph-node>');
-            var data = _map.nodes[nodeId].data;
+            var data = map.nodes[nodeId].data;
             var nodeScope = $scope.$new(true);
             angular.extend(nodeScope, {
                 data: {
@@ -100,24 +48,43 @@ function mmGraph($templateRequest, $compile) {
                     width: node.width,
                     x: node.x,
                     y: node.y
-                    // x: node.x - xInc,
-                    // y: node.y - 35
-                    // x: node.x - xInc + pad,
-                    // y: node.y - yInc + pad
                 }
             });
             elem.find('.nodes').append(linkFn(nodeScope));
         });
-
-        _drawEdgesSimple($scope, g);
-        // _drawEdgesComplex($scope, g);
     }
 
-    function _drawEdgesSimple($scope, g) {
+    function _getTitleClass(type) {
+        var c = ['title'];
+        if (angular.isString(type)) {
+            if (type === 'input' || type === 'final') {
+                c.push('danger');
+            } else if (type === 'receipt') {
+                c.push('warning');
+            }
+        } else {
+            c.push('warning');
+        }
+        return c.join(' ');
+    }
+
+    function _getIconClass(type) {
+        var c = ['icon', 'glyphicon'];
+        if (angular.isString(type)) {
+            if (type === 'input') {
+                c.push('glyphicon-inbox');
+            } else if (type === 'final') {
+                c.push('glyphicon-hdd');
+            }
+        }
+        return c.join(' ');
+    }
+
+    function _drawEdgesSimple($scope, graphModel) {
         $scope.edges = [];
-        g.edges().forEach(function (e) {
-            var layoutSource = g.node(e.v);
-            var layoutTarget = g.node(e.w);
+        graphModel.edges().forEach(function (e) {
+            var layoutSource = graphModel.node(e.v);
+            var layoutTarget = graphModel.node(e.w);
             $scope.edges.push({
                 x1 : layoutSource.x + layoutSource.width,
                 y1 : layoutSource.y + (layoutSource.height / 2),
@@ -200,31 +167,6 @@ function mmGraph($templateRequest, $compile) {
         return [e1,e2,e3];
     }
 
-    function _getTitleClass(type) {
-        var c = ['title'];
-        if (angular.isString(type)) {
-            if (type === 'input' || type === 'final') {
-                c.push('danger');
-            } else if (type === 'receipt') {
-                c.push('warning');
-            }
-        } else {
-            c.push('warning');
-        }
-        return c.join(' ');
-    }
-
-    function _getIconClass(type) {
-        var c = ['icon', 'glyphicon'];
-        if (angular.isString(type)) {
-            if (type === 'input') {
-                c.push('glyphicon-inbox');
-            } else if (type === 'final') {
-                c.push('glyphicon-hdd');
-            }
-        }
-        return c.join(' ');
-    }
 };
 
 module.exports = mmGraph;
