@@ -4,12 +4,12 @@ function mmGraphCtrl() {
     var vm = this;
 
     angular.extend(vm, {
-        activate: activate
+        getEdges: getEdges
     });
 
-    function activate() {
+    function getEdges() {
+        return vm.edges;
     }
-
 }
 
 module.exports = mmGraphCtrl;
