@@ -1,10 +1,8 @@
 var dagre = require('dagre');
 
-mmGraph.$inject = ['$templateRequest', '$compile', 'mmGraphService'];
+mmGraph.$inject = ['$compile', 'mmGraphService'];
 
-function mmGraph($templateRequest, $compile, mmGraphService) {
-    var _map,
-        _parentDimensions;
+function mmGraph($compile, mmGraphService) {
 
     return {
         restrict: 'E',
@@ -38,12 +36,15 @@ function mmGraph($templateRequest, $compile, mmGraphService) {
                     height: 70
                 }
             });
-            _drawNodes($scope, elem, gm);
-            _drawEdgesSimple($scope, gm);
+            var scopeFactory = function () {
+                return $scope.$new(true);
+            };
+            _drawNodes(scopeFactory, elem, gm);
+            ctrl.edges = _drawEdgesSimple(gm);
         }
     }
 
-    function _drawNodes($scope, elem, graphModel) {
+    function _drawNodes(scopeFactory, elem, graphModel) {
         var nodeIds = graphModel.getNodeIds(),
             nodeId,
             nodeLayout,
@@ -57,8 +58,8 @@ function mmGraph($templateRequest, $compile, mmGraphService) {
             nodeId = nodeIds[i];
             nodeLayout = graphModel.getNodeLayout(nodeId);
             data = graphModel.getNodeById(nodeId).data;
-            linkFn = $compile(tpl),
-            nodeScope = $scope.$new(true);
+            linkFn = $compile(tpl);
+            nodeScope = scopeFactory();
             angular.extend(nodeScope, {
                 data: {
                     title: data.name,
@@ -103,21 +104,28 @@ function mmGraph($templateRequest, $compile, mmGraphService) {
         return c.join(' ');
     }
 
-    function _drawEdgesSimple($scope, graphModel) {
-        $scope.edges = [];
-        var edges = graphModel.getEdges();
-        edges.forEach(function (e) {
-            var layoutSource = graphModel.getNodeLayout(e.v);
-            var layoutTarget = graphModel.getNodeLayout(e.w);
-            $scope.edges.push({
-                x1: layoutSource.x + layoutSource.width,
-                y1: layoutSource.y + (layoutSource.height / 2),
-                x2: layoutTarget.x,
-                y2: layoutTarget.y + (layoutTarget.height / 2)
+    function _drawEdgesSimple(graphModel) {
+        var viewEdges = [],
+            edges = graphModel.getEdges(),
+            edge,
+            i = 0,
+            len = edges.length,
+            source,
+            target;
+        for (; i < len; i++) {
+            edge = edges[i];
+            source = graphModel.getNodeLayout(edge.v);
+            target = graphModel.getNodeLayout(edge.w);
+            viewEdges.push({
+                x1: source.x + source.width,
+                y1: source.y + (source.height / 2),
+                x2: target.x,
+                y2: target.y + (target.height / 2)
             });
-        });
+        }
+        return viewEdges;
     }
 
-};
+}
 
 module.exports = mmGraph;
