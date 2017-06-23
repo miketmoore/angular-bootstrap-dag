@@ -7,7 +7,9 @@
         <div class="container-responsive">
             <h1>{{appCtrl.model.title}}</h1>
             <div class="lead">{{appCtrl.model.subtitle}}</div>
-            <ui-view></ui-view>
+            <div class="custom-graph-container" ng-controller="CustomGraphCtrl as customGraphCtrl">
+                <mm-graph data="customGraphCtrl.model.data"></mm-graph>
+            </div>
         </div>
         <script type="text/javascript" src="js/components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="js/components/bootstrap/dist/js/bootstrap.min.js"
