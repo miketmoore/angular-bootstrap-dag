@@ -55,7 +55,6 @@ function mmGraphServiceFactory() {
         for (; i < len; i++) {
             node = nodes[i];
             this.graphModel.setNode(node.data.id, {
-                label: node.data.name,
                 width: nodeLayout.width,
                 height: nodeLayout.height
             });
@@ -74,7 +73,11 @@ function mmGraphServiceFactory() {
     };
 
     GraphModel.prototype.getNodeById = function (nodeId) {
-        return this.map.nodes[nodeId];
+        var a = this.map.nodes[nodeId];
+        var nodeLayout = this.graphModel.node(nodeId);
+        return angular.extend({}, a, {
+            layout: nodeLayout
+        });
     };
 
     GraphModel.prototype.getNodeLayout = function (nodeId) {

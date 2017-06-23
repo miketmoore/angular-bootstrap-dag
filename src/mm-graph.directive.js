@@ -47,8 +47,7 @@ function mmGraph($compile, mmGraphService) {
     function _drawNodes(scopeFactory, elem, graphModel) {
         var nodeIds = graphModel.getNodeIds(),
             nodeId,
-            nodeLayout,
-            data,
+            node,
             tpl = '<mm-graph-node data="data"></mm-graph-node>',
             linkFn,
             nodeScope,
@@ -56,22 +55,21 @@ function mmGraph($compile, mmGraphService) {
             len = nodeIds.length;
         for (; i < len; i++) {
             nodeId = nodeIds[i];
-            nodeLayout = graphModel.getNodeLayout(nodeId);
-            data = graphModel.getNodeById(nodeId).data;
+            node = graphModel.getNodeById(nodeId);
             linkFn = $compile(tpl);
             nodeScope = scopeFactory();
             angular.extend(nodeScope, {
                 data: {
-                    title: data.name,
-                    subtitle: data.subtitle,
-                    titleClass: _getTitleClass(data.type),
-                    iconClass: _getIconClass(data.type),
-                    percentage: angular.isNumber(data.percentage) ? data.percentage : undefined,
+                    title: node.data.name,
+                    subtitle: node.data.subtitle,
+                    titleClass: _getTitleClass(node.data.type),
+                    iconClass: _getIconClass(node.data.type),
+                    percentage: angular.isNumber(node.data.percentage) ? node.data.percentage : undefined,
                     percentageLabel: 'Percentage:',
-                    height: nodeLayout.height,
-                    width: nodeLayout.width,
-                    x: nodeLayout.x,
-                    y: nodeLayout.y
+                    height: node.layout.height,
+                    width: node.layout.width,
+                    x: node.layout.x,
+                    y: node.layout.y
                 }
             });
             elem.find('.nodes').append(linkFn(nodeScope));
