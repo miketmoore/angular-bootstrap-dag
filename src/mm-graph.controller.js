@@ -1,5 +1,3 @@
-var dagre = require('dagre');
-
 function mmGraphCtrl() {
     var vm = this;
 

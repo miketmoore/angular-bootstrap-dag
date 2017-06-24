@@ -1,5 +1,3 @@
-var dagre = require('dagre');
-
 mmGraph.$inject = ['mmGraphService'];
 
 function mmGraph(mmGraphService) {

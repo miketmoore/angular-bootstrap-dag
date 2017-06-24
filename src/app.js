@@ -6,6 +6,7 @@ var ngAnimate = require('angular-animate');
 var uibootstrap = require('angular-ui-bootstrap');
 
 angular.module('app', ['ngAnimate', 'ui.bootstrap'])
+    .constant('dagre', require('dagre'))
     .factory('dataService', require('./data.service'))
 
     .controller('AppCtrl', require('./app.controller'))

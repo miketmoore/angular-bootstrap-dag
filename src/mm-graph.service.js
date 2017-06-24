@@ -1,6 +1,6 @@
-var dagre = require('dagre');
+mmGraphServiceFactory.$inject = ['dagre'];
 
-function mmGraphServiceFactory() {
+function mmGraphServiceFactory(dagre) {
     var GraphModel = function (params) {
         this.data = params.data;
         this.nodeLayout = params.nodeLayout;
